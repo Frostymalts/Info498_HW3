@@ -132,6 +132,10 @@ func averageElementsInArray(x: [Int]) -> Int {
 
 // generic array function
 func calculateArray(operation: ([Int]) -> Int, x: [Int]) -> Int {
+    if x.count < 1 {
+        print("Yo, this array aint right")
+        return -1
+    }
     return operation(x)
 }
 
@@ -167,10 +171,20 @@ func subtractDictionaries(pointOne: Dictionary<String, Double>, pointTwo: Dictio
     return ["x": (pointOne["x"]! - pointTwo["x"]!), "y": (pointOne["y"]! - pointTwo["y"]!)]
 }
 
+func calcDictionaries(operation: ([String : Int], [String : Int]) -> [String : Int],
+    pointOne: [String : Int], pointTwo: [String: Int]) -> [String : Int] {
+        if pointOne["x"] == nil || pointTwo["x"] == nil
+        || pointOne["y"] == nil || pointTwo["y"] == nil {
+            print("Dictionary did not contain an x or y key")
+            return ["x": -1, "y": -1]
+        }
+        return operation(pointOne, pointTwo)
+}
+
 // ------------------- NO MORE METHODS PAST HERE -------------------------
 
 //part 1: simple calc
-print("Part 1: Enter an expression separated by returns:")
+print("~~~~~~~~~~~~ Part 1: Enter an expression separated by returns: ~~~~~~~~~~~~")
 
 var firstInp = input()
 let operand = input()
@@ -187,27 +201,38 @@ if (firstInp.containsString(".") || secondInp.containsString(".")) { // deterimi
     let result = parseOperandAndCalc(operand, x: x, y: y)
     print("result: \(result)")
 }
+print("")
 
 //part 2: multi-operand
-print("Part 2: Enter an expression separated by spaces then count, avg, or fact:")
+print("~~~~~~~~~~~~ Part 2: Enter an expression separated by spaces then count, avg, or fact: ~~~~~~~~~~~~")
+
 let digits = input().componentsSeparatedByString(" ")
 let secondResult = parseMultiOperandAndCalc(digits)
 print(secondResult)
+print("")
 
 
-//part 3: array addition and multiplication
+//part 3: array addition and multiplicationP
+print("~~~~~~~~~~~~ Part 3: Array addition and multiplication ~~~~~~~~~~~~")
+
 let xArray = [1, 2, 3, 4, 5]
 let yArray = [-5, 16, 22, 0, 2]
 print("Adding all the elements int the array \(xArray)")
 print("Result = \(calculateArray(addAllElementsInArray, x:xArray))")
+print("")
 print("Multiplying all the elements in \(yArray)")
 print("Result = \(calculateArray(multiplyAllElementsInArray, x:yArray))")
+print("")
 print("Counting all the elements int the array \(xArray)")
 print("Result = \(calculateArray(arrayCount, x:xArray))")
+print("")
 print("Averaging all the elements in \(yArray)")
 print("Result = \(calculateArray(averageElementsInArray, x:yArray))")
+print("")
 
 //part 4: tuple and dictionary addition and subtraction
+print("~~~~~~~~~~~~ Part 4: Tuple and dictionary addition and subtraction ~~~~~~~~~~~~")
+
 let pointOne = (1, 5)
 let pointTwo = (7, -2)
 let dictOne = ["x": 4, "y": 12]
@@ -215,10 +240,32 @@ let dictTwo = ["x": 5, "y": 10]
 
 print("Adding the two points \(pointOne) and \(pointTwo)")
 print("Result = \(addPoints(pointOne, pointTwo: pointTwo))")
+print("")
 print("Subtracting the two points \(pointOne) and \(pointTwo)")
 print("Result = \(subtractPoints(pointOne, pointTwo: pointTwo))")
+print("")
 
-print("Adding the two dictionaries \(pointOne) and \(pointTwo)")
-print("Result = \(addPoints(pointOne, pointTwo: pointTwo))")
-print("Subtracting the two dictionaries \(pointOne) and \(pointTwo)")
-print("Result = \(subtractPoints(pointOne, pointTwo: pointTwo))")
+print("Adding the two dictionaries \(dictOne) and \(dictTwo)")
+print("Result = \(calcDictionaries(addDictionaries,pointOne: dictOne, pointTwo: dictTwo))")
+print("")
+print("Subtracting the two dictionaries \(dictOne) and \(dictTwo)")
+print("Result = \(calcDictionaries(subtractDictionaries,pointOne: dictOne, pointTwo: dictTwo))")
+print("")
+
+//part 5: Error Handling
+print("~~~~~~~~~~~~ Part 5: Error Handling ~~~~~~~~~~~~")
+
+let emptyArray = [Int]()
+print("Handling the empty array \(emptyArray)")
+print("Result = \(calculateArray(addAllElementsInArray, x:emptyArray))")
+print("")
+
+let noX = ["y": 1]
+let noY = ["x": 1]
+print("Adding the two dictionaries \(noX) and \(dictTwo)")
+print("Result = \(calcDictionaries(addDictionaries,pointOne: noX, pointTwo: dictTwo))")
+print("")
+print("Subtracting the two dictionaries \(noY) and \(dictTwo)")
+print("Result = \(calcDictionaries(subtractDictionaries,pointOne: noY, pointTwo: dictTwo))")
+print("")
+
